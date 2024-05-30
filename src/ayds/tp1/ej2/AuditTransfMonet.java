@@ -1,4 +1,4 @@
-package ayds.tp1.ej2;
+/*package ayds.tp1.ej2;
 
 public class AuditTransfMonet {
 
@@ -29,3 +29,24 @@ public class AuditTransfMonet {
        return ConexionMail.getInstance();
     }
 }
+*/
+package ayds.tp1.ej2;
+
+public class AuditTransfMonet {
+    private TransferenciaImportanteChecker transferenciaImportanteChecker;
+    private MailSender mailSender;
+
+    public AuditTransfMonet(TransferenciaImportanteChecker transferenciaImportanteChecker, MailSender mailSender) {
+        this.transferenciaImportanteChecker = transferenciaImportanteChecker;
+        this.mailSender = mailSender;
+    }
+
+    public void transferenciaRealizada(Transferencia transferencia) {
+        if (transferenciaImportanteChecker.esTransferenciaImportante(transferencia)) {
+            String auditor = mailSender.obtenerDireccionMailAuditor();
+            String mensaje = mailSender.componerMensajeAviso(transferencia);
+            mailSender.enviarAviso(auditor, mensaje);
+        }
+    }
+}
+
